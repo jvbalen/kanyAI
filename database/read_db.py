@@ -68,3 +68,5 @@ for fn in c:
 	startframes = starttimes.astype(int)*(44100/1024.)
 	comb = np.array([startframes, starttimes]).T
 	np.savetxt(fn + "_starttimes.csv", comb, delimiter=",", fmt="%s")
+
+
