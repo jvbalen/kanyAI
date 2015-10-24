@@ -1,0 +1,7 @@
+======
+kanyAI
+======
+
+Automated sample-finding.
+
+HAMR @ ISMIR 2015 project in progress.
