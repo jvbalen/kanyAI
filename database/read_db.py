@@ -2,31 +2,60 @@
 
 import numpy as np
 
-# First sheet in the DB
-track_db = np.genfromtxt("sample_database.csv", delimiter=";", dtype=object)
-# Second sheet in the DB
-sample_db = np.genfromtxt("sample_database2.csv", delimiter=";", dtype=object)
-# List of audio files in the dataset
-file_db = np.genfromtxt("audio_files.csv", dtype=object)
+# C: candidates: sampled tracks
+c = np.genfromtxt("db/C.csv", delimiter=",", dtype=object)
+# DB_comments: 
+db_comments = np.genfromtxt("db/DB_comments.csv", delimiter=",", dtype=object)
+# DB: second sheet of xls
+db = np.genfromtxt("db/DB.csv", delimiter=",", dtype=object)
+# Q: queries
+q = np.genfromtxt("db/Q.csv", delimiter=",", dtype=object)
+# metadata:
+metadata = np.genfromtxt("db/metadata.csv", delimiter=",", dtype=object)
+# file dataset
+file_db = np.genfromtxt("audio_files.csv", delimiter=",", dtype=object)
 
-# contents of the first sheet in sample_database.xls
-tracks_trackids = track_db[:,0]
-tracks_artists = track_db[:,1]
-tracks_titles = track_db[:,2]
-tracks_years = track_db[:,3].astype(int)
-tracks_genres = track_db[:,4]
+# # check if files exist:
+# cleaned_c = c
+# for file_id in np.unique(file_db):
+# 	if not file_id in c:
+# 		for loc in np.where(cleaned_c==file_id):
+# 			cleaned_c = np.delete(cleaned_c, (loc), axis=0)
 
-# contents of the second sheet in sample_database.xls
-sample_sampleids = sample_db[:,0]
-sample_sampling_track = sample_db[:,1]
-sample_track_sampled = sample_db[:,2]
-sample_interpolation = sample_db[:,3]
-sample_time_sampled =  sample_db[:,4]
-sample_times_of_sample = sample_db[:,5]
-sample_repetitions = sample_db[:,6]
-sample_type_loop = sample_db[:,7]
-sample_comments = sample_db[:,8]
+# cleaned_q = q
+# for file_id in np.unique(file_db):
+# 	if not file_id in q:
+# 		for loc in np.where(cleaned_q==file_id):
+# 			cleaned_q = np.delete(cleaned_q, (loc), axis=0)
 
-# for i in np.arange(0,len(trackids)):
-# 	if not trackids[i] in file_db:
-# 		clean_db = np.delete(track_db, (i), axis=0)
+# cleaned_db = db
+# for file_id in np.unique(file_db):
+# 	if not file_id in db_sampling_track:
+# 		for loc in np.where(db_sampling_track==file_id):
+# 			cleaned_db = np.delete(cleaned_db, (loc), axis=0)
+
+# metadata fields
+metadata_fileids = metadata[:,0]
+metadata_artist = metadata[:,1]
+metadata_title = metadata[:,2]
+metadata_year = metadata[:,3]
+metadata_genre = metadata[:,4]
+
+# db fields
+db_sampleids = db[:,0]
+db_sampling_track = db[:,1] # q
+db_track_sampled = db[:,2] # c
+db_interpolation = db[:,3]
+db_time_sampled =  db[:,4]
+db_times_of_sample = db[:,5]
+db_repetitions = db[:,6]
+db_type_loop = db[:,7]
+
+# db_comments fields
+comments_sample_ids = db_comments[:,0]
+comments_track_ids = db_comments[:,1]
+comments_track_sampled_ids = db_comments[:,2]
+comments_start_time = db_comments[:,3]
+comments_end_time = db_comments[:,4]
+comments_repetitions = db_comments[:,5]
+comments_comments = db_comments[:,5]
