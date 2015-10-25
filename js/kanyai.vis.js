@@ -86,11 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     wavesurfer.load(audio_file);
 
-    /* Regions */
-    wavesurfer.enableDragSelection({
-        color: randomColor(0.1)
-    });
-
     wavesurfer.on('region-click', function (region, e) {
         e.stopPropagation();
         // Play on click, loop on shift click
@@ -278,8 +273,8 @@ function randomColor(alpha) {
 function editAnnotation (region) {
     var form = document.forms.edit;
     form.style.opacity = 1;
-    form.elements.start.value = Math.round(region.start * 10) / 10,
-    form.elements.end.value = Math.round(region.end * 10) / 10;
+    form.elements.start.value = Math.round(region.start * 100000) / 100000,
+    form.elements.end.value = Math.round(region.end * 100000) / 100000;
     form.elements.note.value = region.data.note || '';
     form.onsubmit = function (e) {
         e.preventDefault();
