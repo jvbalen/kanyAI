@@ -16,9 +16,7 @@ def main():
             base_name = f[:f.index('_')]
             data = np.genfromtxt(file_path, usecols=(0), delimiter=',').T
             frames = [int(round(seconds / seconds_per_frame)) for seconds in data]
-            with open(os.path.join(output_folder, '%s_beats.csv' % base_name), 'w') as output_file:
-                for frame in frames:
-                    print >>output_file, frame
+            np.savetxt(os.path.join(output_folder, '%s_beats.csv' % base_name), frames, fmt='%d')
             print 'Done ' + f
 
 
