@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     wavesurfer.load(audio_file);
+    document.querySelector('#subtitle').textContent = track_name || '–';
 
     wavesurfer.on('region-click', function (region, e) {
         e.stopPropagation();
@@ -302,7 +303,7 @@ function showNote (region) {
     if (!showNote.el) {
         showNote.el = document.querySelector('#subtitle');
     }
-    showNote.el.textContent = region.attributes.label || '–';
+    //showNote.el.textContent = track_name || '–';
 }
 
 /**
