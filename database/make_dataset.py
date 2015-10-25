@@ -20,11 +20,6 @@ for fn in c:
 		samplestarts_s = np.array([samplestarts[1]])
 		samplestarts_fr = np.array([samplestarts[0]])
 	# find nearest beat of start time:
-	n1 = 0
-	n4 = 0
-	n8 = 0 
-	n16 = 0
-	n32 = 0
 	for bt in np.arange(len(beattimes)):
 		for s in samplestarts_s:
 			nearest = find_nearest(beattimes, s)
@@ -41,5 +36,5 @@ for fn in c:
 
 	# print csvcontents
 	csvfname = "groundtruth/" + fn + "_groundtruth.csv"
-	# np.savetxt(csvfname, csvcontents, delimiter=",")
+	np.savetxt(csvfname, csvcontents, delimiter=",")
 	print "wrote: " + csvfname
