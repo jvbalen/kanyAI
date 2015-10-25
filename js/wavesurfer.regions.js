@@ -156,8 +156,8 @@ WaveSurfer.Region = {
 
     /* Play the region in loop. */
     playLoop: function () {
-        this.play();
-        this.once('out', this.playLoop.bind());
+        this.wavesurfer.play(this.start);
+        this.once('out', function() {console.log("out reached"); this.playLoop();}.bind(this));
     },
 
     /* Render a region as a DOM element. */
