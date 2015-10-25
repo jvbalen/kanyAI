@@ -276,7 +276,7 @@ function editAnnotation (region) {
     form.style.opacity = 1;
     form.elements.start.value = Math.round(region.start * 100000) / 100000,
     form.elements.end.value = Math.round(region.end * 100000) / 100000;
-    form.elements.note.value = region.data.note || '';
+    //form.elements.note.value = region.data.note || '';
     form.onsubmit = function (e) {
         e.preventDefault();
         region.update({
