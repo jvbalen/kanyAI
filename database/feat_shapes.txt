@@ -1,0 +1,29 @@
+FEATURE SHAPES:
+
+"am: AmplitudeModulation blockSize="+blockSize+" stepSize="+stepSize,
+"ac: AutoCorrelation ACNbCoeffs=49 blockSize="+blockSize+" stepSize="+stepSize,
+"cdod: ComplexDomainOnsetDetection FFTLength=0  FFTWindow=Hanning blockSize="+blockSize+" stepSize="+stepSize,
+"en: Energy blockSize="+blockSize+" stepSize="+stepSize,
+"env: Envelope EnDecim=200 blockSize="+blockSize+" stepSize="+stepSize,
+"envsh: EnvelopeShapeStatistics EnDecim=200  blockSize="+blockSize+" stepSize="+stepSize,
+"lpc: LPC LPCNbCoeffs=4  blockSize="+blockSize+" stepSize="+stepSize,
+"lfs: LSF LSFDisplacement=1  LSFNbCoeffs=10 blockSize="+blockSize+" stepSize="+stepSize,
+"lx: Loudness blockSize="+blockSize+" stepSize="+stepSize,
+"mfcc: MFCC blockSize="+blockSize+" stepSize="+stepSize+" CepsNbCoeffs=16",
+"obsi: OBSI blockSize="+blockSize+" stepSize="+stepSize,
+"obsir: OBSIR blockSize="+blockSize+" stepSize="+stepSize,
+"psh: PerceptualSharpness blockSize="+blockSize+" stepSize="+stepSize,
+"psp: PerceptualSpread blockSize="+blockSize+" stepSize="+stepSize,
+"scfpb: SpectralCrestFactorPerBand blockSize="+blockSize+" stepSize="+stepSize,
+"sd: SpectralDecrease blockSize="+blockSize+" stepSize="+stepSize,
+"sf: SpectralFlatness blockSize="+blockSize+" stepSize="+stepSize,
+"sfpb: SpectralFlatnessPerBand FFTLength=0 FFTWindow=Hanning blockSize="+blockSize+" stepSize="+stepSize,	
+"sfx: SpectralFlux FFTLength=0  FFTWindow=Hanning  FluxSupport=All  blockSize="+blockSize+" stepSize="+stepSize,
+"srl: SpectralRolloff FFTLength=0  FFTWindow=Hanning   blockSize="+blockSize+" stepSize="+stepSize,				
+"sss: SpectralShapeStatistics blockSize="+blockSize+" stepSize="+stepSize,
+"ss: SpectralSlope blockSize="+blockSize+" stepSize="+stepSize,
+"sv: SpectralVariation blockSize="+blockSize+" stepSize="+stepSize,
+"tss: TemporalShapeStatistics blockSize="+blockSize+" stepSize="+stepSize,
+"zcr: ZCR blockSize="+blockSize+" stepSize="+stepSize
+
+[('ac', 49), ('en', 1), ('zcr', 1), ('am', 8), ('obsir', 9), ('lfs', 10), ('obsi', 10), ('env', 6), ('tss', 4), ('lx', 24), ('sfpb', 23), ('psh', 1), ('sfx', 1), ('sss', 4), ('psp', 1), ('scfpb', 23), ('mfcc', 16), ('ss', 1), ('envsh', 4), ('sv', 1), ('srl', 1), ('cdod', 1), ('lpc', 4), ('sf', 1), ('sd', 1)]

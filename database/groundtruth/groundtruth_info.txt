@@ -1,0 +1,6 @@
+column one: beat starttime
+column two: single beat class 1
+column three: 4 beat class 1
+column four: 8 beat class 1
+column five: 16 beat class 1
+column six: 32 beat class 1
