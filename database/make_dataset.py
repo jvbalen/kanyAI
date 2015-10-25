@@ -1,3 +1,5 @@
+# this creates the ground truth data
+
 import numpy as np
 
 def find_nearest(array,value):
@@ -12,11 +14,11 @@ for fn in c:
 	csvcontents = np.zeros((len(beattimes), 6))
 	samplestarts = np.genfromtxt("features/" + fn + "_starttimes.csv", delimiter=",")
 	if samplestarts.ndim > 1:
-		samplestarts_s = samplestarts[:,0]
-		samplestarts_fr = samplestarts[:,1]
+		samplestarts_s = samplestarts[:,1]
+		samplestarts_fr = samplestarts[:,0]
 	if samplestarts.ndim == 1:
-		samplestarts_s = np.array([samplestarts[0]])
-		samplestarts_fr = np.array([samplestarts[1]])
+		samplestarts_s = np.array([samplestarts[1]])
+		samplestarts_fr = np.array([samplestarts[0]])
 	# find nearest beat of start time:
 	n1 = 0
 	n4 = 0
@@ -27,15 +29,17 @@ for fn in c:
 		for s in samplestarts_s:
 			nearest = find_nearest(beattimes, s)
 			if beattimes[bt] == nearest:
-				this =  np.array([nearest, 1, 0, 0, 0, 0])
+				this =  np.array([beattimes[bt], 1, 0, 0, 0, 0])
 			else:
-				this = np.array([nearest, 0, 0, 0, 0, 0])
+				this = np.array([beattimes[bt], 0, 0, 0, 0, 0])
 			csvcontents[bt] = this
-	for ones in np.where(csvcontents[:,1]==1):
-		csvcontents[:,2][ones:ones+4] = np.ones(4)
-		csvcontents[:,3][ones:ones+8] = np.ones(8)
-		csvcontents[:,4][ones:ones+16] = np.ones(16)
-		csvcontents[:,5][ones:ones+32] = np.ones(32)
+	for ones in np.where(csvcontents[:,1]==1)[0]:
+		csvcontents[:,2][ones:ones+4] = np.ones(4)[0:len(csvcontents)-ones]
+		csvcontents[:,3][ones:ones+8] = np.ones(8)[0:len(csvcontents)-ones]
+		csvcontents[:,4][ones:ones+16] = np.ones(16)[0:len(csvcontents)-ones]
+		csvcontents[:,5][ones:ones+32] = np.ones(32)[0:len(csvcontents)-ones]
+
+	# print csvcontents
 	csvfname = "groundtruth/" + fn + "_groundtruth.csv"
-	np.savetxt(csvfname, csvcontents, delimiter=",")
+	# np.savetxt(csvfname, csvcontents, delimiter=",")
 	print "wrote: " + csvfname
