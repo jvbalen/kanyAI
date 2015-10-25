@@ -3,12 +3,12 @@ import os
 
 from aggregate import hop_size, sr
 
-input_folder = '../data/qm-tempotracker/'
-#input_folder = '../data/beatroot/'
-output_folder = '../data/frames/'
+default_input_folder = '../data/qm-tempotracker/'
+#default_input_folder = '../data/beatroot/'
+default_output_folder = '../data/frames/'
 
 
-def main():
+def seconds_to_frames(input_folder, output_folder):
     seconds_per_frame = float(hop_size) / sr
     for f in os.listdir(input_folder):
         file_path = os.path.join(input_folder, f)
@@ -21,4 +21,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    seconds_to_frames(default_input_folder, default_output_folder)
