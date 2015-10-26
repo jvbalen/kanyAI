@@ -15,6 +15,7 @@ import numpy as np
 
 feature_extraction = 0
 machine_learning = 1
+predicting = 1
 
 # # ================================= CSV READING ============================================ 
 # db = np.genfromtxt("db/DB.csv", delimiter=",", dtype=object)
@@ -91,7 +92,7 @@ if machine_learning:
 	allfeatures = []
 	# read the feature csv file
 	for fn in c:		
-		classfile = "groundtruth/"+fn+"_groundtruth.csv"
+		classfile = "groundtruth/"+fn+"_groundtruth_beatroot.csv"
 		classes = np.genfromtxt(classfile, delimiter=",")
 		classes1 = classes[:,1]
 		classes4 = classes[:,2]
@@ -99,17 +100,28 @@ if machine_learning:
 		classes16 = classes[:,4]
 		classes32 = classes[:,5]
 
-		featurefile_cq = "features/constantq-aggregated/"+fn+".csv"
+		featurefile_cq = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated/"+fn+".csv"
 		featurefile_std = "features/vincent_beats_std/"+fn+".csv"
 		featurefile_med = "features/vincent_beats_median/"+fn+".csv"
 		featurefile_en = "features/vincent_beats_entropy/"+fn+".csv"
-		
+		constantqagg = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated/"+fn+".csv"
+		constantqaggentropy = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated-entropy/"+fn+".csv"
+		constantqaggstd = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated-std/"+fn+".csv"
+
 		features_cq = np.genfromtxt(featurefile_cq, delimiter=",")
 		features_std = np.genfromtxt(featurefile_std, delimiter=",")
 		features_med = np.genfromtxt(featurefile_med, delimiter=",")
-		features_en = np.genfromtxt(featurefile_en, delimiter=",")
+		features_en = np.nan_to_num(np.genfromtxt(featurefile_en, delimiter=","))
+		features_cqagg = np.genfromtxt(constantqagg, delimiter=",")
+		features_cqen = np.nan_to_num(np.genfromtxt(constantqaggentropy, delimiter=","))
+		features_cqstd = np.genfromtxt(constantqaggstd, delimiter=",")
 
-		features = np.vstack((features_cq,features_std))
+		# std_mfcc  = features_std[:,175:187]
+		# med_mfcc  = features_med[:,175:187]
+
+		# features = med_mfcc
+		# features = np.hstack((std_mfcc, med_mfcc))
+		features = np.hstack((features_cq,features_std,features_med,features_en,features_cqagg,features_cqen,features_cqstd))
 
 		# equal sampling:
 		barlen = 8
@@ -134,23 +146,47 @@ if machine_learning:
 
 	test_size = 0.3
 	clf_rand_state = np.random.randint(100, size=1)[0]
-	clf = Pipeline([('classification', GradientBoostingClassifier(n_estimators=200, learning_rate=0.1, max_depth=3, random_state=0, verbose=1))])
+	clf = Pipeline([
+		('feature_selection', LinearSVC(penalty="l1", dual=False)),
+		('classification', GradientBoostingClassifier(n_estimators=700, learning_rate=0.1, max_depth=3, random_state=0, verbose=1))
+		])
 
-	# k repeats
-	k = 1
-	scores = np.zeros(k)
-	for i in np.arange(k):
-		random_state = np.random.randint(100, size=1)[0]
-		X_train, X_test, y_train, y_test = cross_validation.train_test_split(allfeatures, allclasses, test_size=test_size, random_state=random_state)
-		print "Fitting model: " + str(i)
-		clf.fit(X_train, y_train)
+	# random_state = np.random.randint(100, size=1)[0]
+	# X_trainr, X_testr, y_trainr, y_testr = cross_validation.train_test_split(allfeatures, allclasses, test_size=test_size, random_state=0)		
+	X_train, X_test, y_train, y_test = allfeatures[0:761], allfeatures[762:], allclasses[0:761], allclasses[762:]		
+	print "Fitting model: " + str(i)
+	clf.fit(X_train, y_train)
+	score = clf.score(X_test, y_test)
+	print "Accuracy: " + str(score)
+
+	clf.fit(allfeatures, allclasses)
+
+if predicting:
+	# for all test files:
+	for fn in glob("/Users/hvkoops/repos/kanyAI//data/test_audio/wav/*.wav"):
+		thisf = fn[49:-4]
+
+		te_featurefile_cq = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated/"+thisf+".csv"
+		te_featurefile_std = "/Users/hvkoops/repos/kanyAI/data/test_features/vincent_beats_std/"+thisf+".csv"
+		te_featurefile_med = "/Users/hvkoops/repos/kanyAI/data/test_features/vincent_beats_median/"+thisf+".csv"
+		te_featurefile_en = "/Users/hvkoops/repos/kanyAI/data/test_features/vincent_beats_entropy/"+thisf+".csv"
+		te_constantqagg = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated/"+thisf+".csv"
+		te_constantqaggentropy = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated-entropy/"+thisf+".csv"
+		te_constantqaggstd = "/Users/hvkoops/repos/kanyAI/data/constantq-aggregated-std/"+thisf+".csv"
+
+		te_features_cq = np.nan_to_num(np.genfromtxt(te_featurefile_cq, delimiter=",")).astype(np.float32)
+		te_features_std = np.nan_to_num(np.genfromtxt(te_featurefile_std, delimiter=",")).astype(np.float32)
+		te_features_med = np.nan_to_num(np.genfromtxt(te_featurefile_med, delimiter=",")).astype(np.float32)
+		te_features_en = np.nan_to_num(np.genfromtxt(te_featurefile_en, delimiter=",")).astype(np.float32)
+		te_features_cqagg = np.nan_to_num(np.genfromtxt(te_constantqagg, delimiter=",")).astype(np.float32)
+		te_features_cqen = np.nan_to_num(np.genfromtxt(te_constantqaggentropy, delimiter=",")).astype(np.float32)
+		te_features_cqstd = np.nan_to_num(np.genfromtxt(te_constantqaggstd, delimiter=",")).astype(np.float32)
+
+		te_features = np.hstack((te_features_cq,te_features_std,te_features_med,np.nan_to_num(te_features_en),te_features_cqagg,te_features_cqen,te_features_cqstd))
+
 		print "Testing score..."
-		score = clf.score(X_test, y_test)
-		print "Accuracy: " + str(score)
-		scores[i] = score
-
-	avg_acc = np.mean(scores)
-	print "Scores: " + str(scores)
-	print "Average accuracy: " + str(avg_acc)
+		predictions = clf.predict(te_features)
+		predictions_out = predictions.reshape((predictions.shape[0],1))
+		np.savetxt(thisf+"_prediction.csv", predictions_out)
 
 print "- Done"	

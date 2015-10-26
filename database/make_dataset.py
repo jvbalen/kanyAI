@@ -10,7 +10,10 @@ file_db = np.genfromtxt("audio_files.csv", delimiter=",", dtype=object)
 c = np.genfromtxt("db/C.csv", delimiter=",", dtype=object)
 
 for fn in c:
-	beattimes = np.genfromtxt("../data/aubiotempo/" + fn + "_vamp_vamp-aubio_aubiotempo_beats.csv", delimiter=",")
+	if fn == 'T027': continue
+	if fn == 'T078': continue
+	# beattimes = np.genfromtxt("../data/aubiotempo/" + fn + "_vamp_vamp-aubio_aubiotempo_beats.csv", delimiter=",")
+	beattimes = np.genfromtxt("/Users/hvkoops/repos/kanyAI/data/beatroot/" + fn + "_vamp_beatroot-vamp_beatroot_beats.csv", delimiter=",")
 	csvcontents = np.zeros((len(beattimes), 6))
 	samplestarts = np.genfromtxt("features/" + fn + "_starttimes.csv", delimiter=",")
 	if samplestarts.ndim > 1:
@@ -35,6 +38,6 @@ for fn in c:
 		csvcontents[:,5][ones:ones+32] = np.ones(32)[0:len(csvcontents)-ones]
 
 	# print csvcontents
-	csvfname = "groundtruth/" + fn + "_groundtruth.csv"
+	csvfname = "groundtruth/" + fn + "_groundtruth_beatroot.csv"
 	np.savetxt(csvfname, csvcontents, delimiter=",")
 	print "wrote: " + csvfname
